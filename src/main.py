@@ -27,7 +27,11 @@ except Exception as err:
     print("Unexpected error\n%s" % err)
     exit(1)
 
-ops2 = {  "ADD"  : "0000"
+#Scan, auto add Ext ops here
+
+#Scan, auto add Nop buffs here
+
+OpFormat0 =  { "ADD"  : "0000"
         , "ADDC" : "0001"
         , "SUB"  : "0010"
         , "SUBB" : "0011"
@@ -49,6 +53,8 @@ ops2 = {  "ADD"  : "0000"
         , "SHFR" : "0101"
         , "ADFN" : "10010"
         , "RMFN" : "10001"}
+OpFormat1 =  {
+        }
 
 
 ilines = source.readlines()
@@ -67,10 +73,10 @@ for i in ilines:
         v0 = v0[2:]
         v1 = v1[2:]
 
-        Op = ops2[str(tok[0])]
+        Op = OpFormat1[str(tok[0])]
 
         Inst = Op + v0 + v1
         print(Inst)
 
 source.close()
-
+dest.close()
