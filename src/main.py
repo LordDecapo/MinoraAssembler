@@ -68,6 +68,15 @@ VarBuff = { "EXT"  : "11000"
 
 ilines = source.readlines()
 
+def normalize(variable , length):
+    D = length - len(variable)
+    variable = D * '0' + variable
+    return(variable)
+
+    dest.write(Inst0 + '\n')
+
+    dest.write(Inst0 + '\n' + Inst1 + '\n')
+
 for i in ilines:
     tok = i.strip('\n').split()
     if tok == ['END']:
@@ -82,6 +91,7 @@ for i in ilines:
             #print(tok)
             v0 = str(bin(int(tok[1])))
             v0 = v0[2:]
+            v0 = normalize(v0 , 3)
 
     #VarBuff are the only instructions
     #that take just 1 variable.
@@ -89,30 +99,31 @@ for i in ilines:
                 Op = VarBuff[str(tok[0])]
                 Inst0 = Op + v0
                 Inst1 = '00000000'
-                print(tok[0])
+                dest.write(Inst0 + '\n' + Inst1 + '\n')
                 print(Inst0)
                 print(Inst1)
 
             elif tok[0] == 'HIGH':
                 Inst0 = '00100' + v0
                 Inst1 = '00000010'
-                print(tok[0])
+                dest.write(Inst0 + '\n' + Inst1 + '\n')
                 print(Inst0)
                 print(Inst1)
 
             elif tok[0] == 'LOW':
                 Inst0 = '00100' + v0
                 Inst1 = '00000011'
-                print(tok[0])
+                dest.write(Inst0 + '\n' + Inst1 + '\n')
                 print(Inst0)
                 print(Inst1)
 
             elif tok[0] == 'BADD':
                 Inst0 = '00100' + v0
                 Inst1 = '00000001'
-                print(tok[0])
+                dest.write(Inst0 + '\n' + Inst1 + '\n')
                 print(Inst0)
                 print(Inst1)
+
 
     #Decode 2nd variable in instruction.
         elif length == 3:
@@ -123,61 +134,73 @@ for i in ilines:
 
             if tok[0] in Logical:
                 Op = Logical[str(tok[0])]
+                v0 = normalize(v0 , 1)
+                v1 = normalize(v1 , 3)
                 Inst0 = Op + v0 + v1
-                print(tok[0])
+                dest.write(Inst0 + '\n')
                 print(Inst0)
 
             elif tok[0] in Memory:
                 Op = Memory[str(tok[0])]
+                v0 = normalize(v0 , 3)
+                v1 = normalize(v1 , 8)
                 Inst0 = Op + v0
                 Inst1 = v1
-                print(tok[0])
+                dest.write(Inst0 + '\n' + Inst1 + '\n')
                 print(Inst0)
                 print(Inst1)
 
             elif tok[0] == 'PTRL':
+                v0 = normalize(v0 , 3)
+                v1 = normalize(v1 , 3)
                 Inst0 = '00010' + v0
                 Inst1 = '00000' + v1
-                print(tok[0])
+                dest.write(Inst0 + '\n' + Inst1 + '\n')
                 print(Inst0)
                 print(Inst1)
 
             elif tok[0] == 'PTRS':
+                v0 = normalize(v0 , 3)
+                v1 = normalize(v1 , 3)
                 Inst0 = '00010' + v0
                 Inst1 = '00001' + v1
-                print(tok[0])
+                dest.write(Inst0 + '\n' + Inst1 + '\n')
                 print(Inst0)
                 print(Inst1)
 
             elif tok[0] == 'NOP':
                 Inst0 = '00000000'
-                print(tok[0])
+                dest.write(Inst0 + '\n')
                 print(Inst0)
 
             elif tok[0] == 'HALT':
                 Inst0 = '11011000'
-                print(tok[0])
+                dest.write(Inst0 + '\n')
                 print(Inst0)
 
     #decodes the 3rd variable in the instruction.
         elif length == 4:
             v0 = str(bin(int(tok[1])))
             v0 = v0[2:]
+            v0 = normalize(v0 , 2)
             v1 = str(bin(int(tok[2])))
             v1 = v0[2:]
+            v1 = normalize(v1 , 3)
             v2 = str(bin(int(tok[3])))
             v2 = v1[2:]
+            v2 = normalize(v2 , 8)
 
             if tok[0] == 'MON':
                 Inst0 = '111' + v0 + v1
-                print(tok[0])
+                Inst1 = v2
+                dest.write(Inst0 + '\n' + Inst1 + '\n')
                 print(Inst0)
                 print(Inst1)
 
             elif tok[0] == 'BRCH':
                 Inst0 = '111' + v0 + v1
-                Inst1 = '111' + v0 + v1
-                print(tok[0])
+                Inst1 = v2
+                dest.write(Inst0 + '\n' + Inst1 + '\n')
                 print(Inst0)
                 print(Inst1)
 
