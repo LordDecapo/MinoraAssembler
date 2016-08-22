@@ -1,0 +1,17 @@
+scans for Extension changes, automatically adds
+  EXT and EXTT operations into code.
+  Space out code with buffed 2nd lines as needed
+
+Schedule code via OOOexe algorithm, keeping
+  atomic code strings in there own scheduled
+  section
+
+Scan for and set Labels and addresses
+
+assemble code into binary
+
+format output as desired
+
+
+
+

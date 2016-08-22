@@ -1,0 +1,42 @@
+def extend(source, dest):
+    Extend = { "ADD"  : "0"
+             , "ADDC" : "0"
+             , "SUB"  : "0"
+             , "SUBB" : "0"
+             , "AND"  : "0"
+             , "NAND" : "0"
+             , "XOR"  : "0"
+             , "XNOR" : "0"
+             , "OR"   : "0"
+             , "NOR"  : "0"
+             , "LOAD" : "0"
+             , "STOR" : "0"
+             , "LDIO" : "0"
+             , "STIO" : "0"
+             , "LIMM" : "any"
+             , "EXT"  : "e"
+             , "EXTT" : "et"
+             , "JUMP" : "0"
+             , "BRCH" : "0"
+             , "MOVA" : "1"
+             , "MOVB" : "1"
+             , "PTRL" : "1"
+             , "PTRS" : "1"
+             , "INTL" : "1"
+             , "INTS" : "1"
+             , "HIGH" : "1"
+             , "LOW"  : "1"
+             , "BADD" : "1"
+             , "INC"  : "1"
+             , "DEC"  : "1"
+             , "SHFL" : "1"
+             , "SHFR" : "1"
+             , "FUNC" : "1"
+             , "ADFN" : "1"
+             , "RMFN" : "1"
+             , "MON"  : "1"}
+
+    for i in ilines:
+        tok = i.strip('\n').split()
+        if tok == ['END']:
+            break
