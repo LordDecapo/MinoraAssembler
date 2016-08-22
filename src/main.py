@@ -13,7 +13,7 @@ args = parser.parse_args()
 Input = args.Input
 Format = args.Format
 Output = args.Output
-Ext = 0
+
 
 
 try:
@@ -73,9 +73,15 @@ def normalize(variable , length):
     variable = D * '0' + variable
     return(variable)
 
-    dest.write(Inst0 + '\n')
-
-    dest.write(Inst0 + '\n' + Inst1 + '\n')
+def format(inst):
+   if Format == 'B' or 'b':
+       return(inst)
+   elif Format == 'H' or 'h':
+       inst = str(hex(bin(inst)))
+       return(inst)
+   elif Format == 'D' or 'd':
+       inst = str(int(bin(inst)))
+       return(inst)
 
 for i in ilines:
     tok = i.strip('\n').split()
@@ -100,29 +106,21 @@ for i in ilines:
                 Inst0 = Op + v0
                 Inst1 = '00000000'
                 dest.write(Inst0 + '\n' + Inst1 + '\n')
-                print(Inst0)
-                print(Inst1)
 
             elif tok[0] == 'HIGH':
                 Inst0 = '00100' + v0
                 Inst1 = '00000010'
                 dest.write(Inst0 + '\n' + Inst1 + '\n')
-                print(Inst0)
-                print(Inst1)
 
             elif tok[0] == 'LOW':
                 Inst0 = '00100' + v0
                 Inst1 = '00000011'
                 dest.write(Inst0 + '\n' + Inst1 + '\n')
-                print(Inst0)
-                print(Inst1)
 
             elif tok[0] == 'BADD':
                 Inst0 = '00100' + v0
                 Inst1 = '00000001'
                 dest.write(Inst0 + '\n' + Inst1 + '\n')
-                print(Inst0)
-                print(Inst1)
 
 
     #Decode 2nd variable in instruction.
@@ -137,8 +135,8 @@ for i in ilines:
                 v0 = normalize(v0 , 1)
                 v1 = normalize(v1 , 3)
                 Inst0 = Op + v0 + v1
+#                Inst0 = str(format(Inst0))
                 dest.write(Inst0 + '\n')
-                print(Inst0)
 
             elif tok[0] in Memory:
                 Op = Memory[str(tok[0])]
@@ -147,8 +145,6 @@ for i in ilines:
                 Inst0 = Op + v0
                 Inst1 = v1
                 dest.write(Inst0 + '\n' + Inst1 + '\n')
-                print(Inst0)
-                print(Inst1)
 
             elif tok[0] == 'PTRL':
                 v0 = normalize(v0 , 3)
@@ -156,8 +152,6 @@ for i in ilines:
                 Inst0 = '00010' + v0
                 Inst1 = '00000' + v1
                 dest.write(Inst0 + '\n' + Inst1 + '\n')
-                print(Inst0)
-                print(Inst1)
 
             elif tok[0] == 'PTRS':
                 v0 = normalize(v0 , 3)
@@ -165,18 +159,15 @@ for i in ilines:
                 Inst0 = '00010' + v0
                 Inst1 = '00001' + v1
                 dest.write(Inst0 + '\n' + Inst1 + '\n')
-                print(Inst0)
-                print(Inst1)
 
             elif tok[0] == 'NOP':
                 Inst0 = '00000000'
                 dest.write(Inst0 + '\n')
-                print(Inst0)
 
             elif tok[0] == 'HALT':
                 Inst0 = '11011000'
-                dest.write(Inst0 + '\n')
-                print(Inst0)
+                Inst0 = '00000000'
+                dest.write(Inst0 + '\n' + Inst1 + '\n')
 
     #decodes the 3rd variable in the instruction.
         elif length == 4:
@@ -194,15 +185,11 @@ for i in ilines:
                 Inst0 = '111' + v0 + v1
                 Inst1 = v2
                 dest.write(Inst0 + '\n' + Inst1 + '\n')
-                print(Inst0)
-                print(Inst1)
 
             elif tok[0] == 'BRCH':
                 Inst0 = '111' + v0 + v1
                 Inst1 = v2
                 dest.write(Inst0 + '\n' + Inst1 + '\n')
-                print(Inst0)
-                print(Inst1)
 
 source.close()
 dest.close()
