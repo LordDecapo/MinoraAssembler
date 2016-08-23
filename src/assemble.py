@@ -37,15 +37,6 @@ def assemble(source,dest):
         variable = D * '0' + variable
         return(variable)
 
-    def format(inst):
-       if Format == 'B' or 'b':
-           return(inst)
-       elif Format == 'H' or 'h':
-           inst = str(hex(bin(inst)))
-           return(inst)
-       elif Format == 'D' or 'd':
-           inst = str(int(bin(inst)))
-           return(inst)
 
     for i in ilines:
         tok = i.strip('\n').split()
@@ -56,9 +47,20 @@ def assemble(source,dest):
 
             length = len(tok)
 
+
+            if tok[0] == 'NOP':
+                inst0 = '00000000' 
+                dest.write(chr(int(inst0,2)))
+
+            elif tok[0] == 'HALT':
+                inst0 = '11011000' 
+                inst1 = '00000000'
+                dest.write(chr(int(inst0,2)))
+                dest.write(chr(int(inst1,2)))
+
+
     #Decode 1st variable in instruction.
-            if length == 2:
-                #print(tok)
+            elif length == 2:
                 v0 = str(bin(int(tok[1])))
                 v0 = v0[2:]
                 v0 = normalize(v0 , 3)
@@ -67,24 +69,28 @@ def assemble(source,dest):
     #that take just 1 variable.
                 if tok[0] in VarBuff:
                     Op = VarBuff[str(tok[0])]
-                    Inst0 = Op + v0
-                    Inst1 = '00000000'
-                    dest.write(Inst0 + '\n' + Inst1 + '\n')
+                    inst0 = Op + v0
+                    inst1 = '00000000'
+                    dest.write(chr(int(inst0,2)))
+                    dest.write(chr(int(inst1,2)))
 
                 elif tok[0] == 'HIGH':
-                    Inst0 = '00100' + v0
-                    Inst1 = '00000010'
-                    dest.write(Inst0 + '\n' + Inst1 + '\n')
+                    inst0 = '00100' + v0
+                    inst1 = '00000010'
+                    dest.write(chr(int(inst0,2)))
+                    dest.write(chr(int(inst1,2)))
 
                 elif tok[0] == 'LOW':
-                    Inst0 = '00100' + v0
-                    Inst1 = '00000011'
-                    dest.write(Inst0 + '\n' + Inst1 + '\n')
+                    inst0 = '00100' + v0
+                    inst1 = '00000011'
+                    dest.write(chr(int(inst0,2)))
+                    dest.write(chr(int(inst1,2)))
 
                 elif tok[0] == 'BADD':
-                    Inst0 = '00100' + v0
-                    Inst1 = '00000001'
-                    dest.write(Inst0 + '\n' + Inst1 + '\n')
+                    inst0 = '00100' + v0
+                    inst1 = '00000001'
+                    dest.write(chr(int(inst0,2)))
+                    dest.write(chr(int(inst1,2)))
 
 
     #Decode 2nd variable in instruction.
@@ -98,40 +104,36 @@ def assemble(source,dest):
                     Op = Logical[str(tok[0])]
                     v0 = normalize(v0 , 1)
                     v1 = normalize(v1 , 3)
-                    Inst0 = Op + v0 + v1
-#                    Inst0 = str(format(Inst0))
-                    dest.write(Inst0 + '\n')
+                    inst0 = Op + v0 + v1
+                    dest.write(chr(int(inst0,2)))
 
                 elif tok[0] in Memory:
                     Op = Memory[str(tok[0])]
                     v0 = normalize(v0 , 3)
                     v1 = normalize(v1 , 8)
-                    Inst0 = Op + v0
-                    Inst1 = v1
-                    dest.write(Inst0 + '\n' + Inst1 + '\n')
+                    inst0 = Op + v0
+                    inst1 = v1
+                    dest.write(chr(int(inst0,2)))
+                    dest.write(chr(int(inst1,2)))
 
                 elif tok[0] == 'PTRL':
                     v0 = normalize(v0 , 3)
                     v1 = normalize(v1 , 3)
-                    Inst0 = '00010' + v0
-                    Inst1 = '00000' + v1
-                    dest.write(Inst0 + '\n' + Inst1 + '\n')
+                    inst0 = '00010' + v0
+                    inst1 = '00000' + v1
+                    dest.write(chr(int(inst0,2)))
+                    dest.write(chr(int(inst1,2)))
 
                 elif tok[0] == 'PTRS':
                     v0 = normalize(v0 , 3)
                     v1 = normalize(v1 , 3)
-                    Inst0 = '00010' + v0
-                    Inst1 = '00001' + v1
-                    dest.write(Inst0 + '\n' + Inst1 + '\n')
+                    inst0 = '00010' + v0
+                    inst1 = '00001' + v1
+                    dest.write(chr(int(inst0,2)))
+                    dest.write(chr(int(inst1,2)))
 
-                elif tok[0] == 'NOP':
-                    Inst0 = '00000000'
-                    dest.write(Inst0 + '\n')
-
-                elif tok[0] == 'HALT':
-                    Inst0 = '11011000'
-                    Inst0 = '00000000'
-                    dest.write(Inst0 + '\n' + Inst1 + '\n')
+                else:
+                    pass
 
     #decodes the 3rd variable in the instruction.
             elif length == 4:
@@ -146,13 +148,17 @@ def assemble(source,dest):
                 v2 = normalize(v2 , 8)
 
                 if tok[0] == 'MON':
-                    Inst0 = '111' + v0 + v1
-                    Inst1 = v2
-                    dest.write(Inst0 + '\n' + Inst1 + '\n')
+                    inst0 = '111' + v0 + v1
+                    inst1 = v2
+                    dest.write(chr(int(inst0,2)))
+                    dest.write(chr(int(inst1,2)))
 
                 elif tok[0] == 'BRCH':
-                    Inst0 = '111' + v0 + v1
-                    Inst1 = v2
-                    dest.write(Inst0 + '\n' + Inst1 + '\n')
+                    inst0 = '111' + v0 + v1
+                    inst1 = v2
+                    dest.write(chr(int(inst0,2)))
+                    dest.write(chr(int(inst1,2)))
+                    print(tok[0])
+
     status = 'Done'
     return(status)
