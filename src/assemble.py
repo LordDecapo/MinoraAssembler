@@ -37,7 +37,6 @@ def assemble(source,dest):
         variable = D * '0' + variable
         return(variable)
 
-
     for i in ilines:
         tok = i.strip('\n').split()
         if tok == ['END']:
@@ -46,7 +45,6 @@ def assemble(source,dest):
         if tok != []:
 
             length = len(tok)
-
 
             if tok[0] == 'NOP':
                 inst0 = '00000000' 
@@ -57,7 +55,6 @@ def assemble(source,dest):
                 inst1 = '00000000'
                 dest.write(chr(int(inst0,2)))
                 dest.write(chr(int(inst1,2)))
-
 
     #Decode 1st variable in instruction.
             elif length == 2:
@@ -91,7 +88,6 @@ def assemble(source,dest):
                     inst1 = '00000001'
                     dest.write(chr(int(inst0,2)))
                     dest.write(chr(int(inst1,2)))
-
 
     #Decode 2nd variable in instruction.
             elif length == 3:
@@ -131,9 +127,6 @@ def assemble(source,dest):
                     inst1 = '00001' + v1
                     dest.write(chr(int(inst0,2)))
                     dest.write(chr(int(inst1,2)))
-
-                else:
-                    pass
 
     #decodes the 3rd variable in the instruction.
             elif length == 4:

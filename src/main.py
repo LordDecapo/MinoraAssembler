@@ -1,5 +1,5 @@
 import argparse
-#import extender
+import extend
 import assemble
 
 parser = argparse.ArgumentParser(description='An assembler for the Minora CPU\
@@ -24,14 +24,24 @@ except Exception as err:
     print("Unexpected error\n%s" % err)
     exit(1)
 try:
+    temp = open('temp.t', 'r+')
+except Exception as err:
+    print("Unexpected error\n%s" % err)
+    exit(1)
+try:
     dest = open(Output, 'w')
 except Exception as err:
     print("Unexpected error\n%s" % err)
     exit(1)
 
-#extend.extend(source, dest)
+extend.extend(source,temp)
 
-assemble.assemble(source,dest)
+#ilines = source.readlines()
+#for i in ilines:
+#    print(iline)
+
+assemble.assemble(temp,dest)
 
 source.close()
 dest.close()
+temp.close()
