@@ -58,8 +58,31 @@ def extend(source, temp):
         stat2 = str(status[1])
         line = x.join(tok)
         out = stat + " " + stat2 + " " + line
-        print(out)
-        temp.write(line + '\n')
+        #print(out)
+        temp.write(out + '\n')
+
+    temp.close()
 
     return(temp)
 
+
+
+
+def insert(source,dest):
+
+    elines = reversed(source.readlines())
+    stat = 0
+    x = ' '
+    for i in elines:
+        tik = i.strip("\n").split(" ")
+        if tik[0] == stat:
+            del tik[0,1]
+        elif tik[0] != stat:
+            if tik[1] < 3:
+                del tik[0,1]
+                #Insert Ext.tik[0]
+            if tik[1] > 2:
+                del tik[0,1]
+                stat = tik[0]
+        print(tik)
+    dest.close()

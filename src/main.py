@@ -1,6 +1,7 @@
 import argparse
 import extend
 import assemble
+import insert
 
 parser = argparse.ArgumentParser(description='An assembler for the Minora CPU\
         \ emulator')
@@ -29,18 +30,23 @@ except Exception as err:
     print("Unexpected error\n%s" % err)
     exit(1)
 try:
-    dest = open(Output, 'w')
+    dest = open(Output, 'r+')
 except Exception as err:
     print("Unexpected error\n%s" % err)
     exit(1)
 
-extend.extend(source,temp)
+extend.extend(source, temp)
+temp = open('temp.t', 'w+')
 
-#ilines = source.readlines()
+extend.insert(temp, dest)
+
+#temp2 = open('temp.t', 'r+')
+#assemble.assemble(temp2,dest)
+
+#ilines = dest.readlines()
 #for i in ilines:
 #    print(iline)
 
-assemble.assemble(temp,dest)
 
 source.close()
 dest.close()

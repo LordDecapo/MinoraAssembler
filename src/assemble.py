@@ -153,5 +153,6 @@ def assemble(source,dest):
                     dest.write(chr(int(inst1,2)))
                     print(tok[0])
 
+    dest.close()
     status = 'Done'
     return(status)
