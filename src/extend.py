@@ -57,20 +57,23 @@ def extend(source, temp):
         stat = str(status[0])
         stat2 = str(status[1])
         line = x.join(tok)
-        out = stat + " " + stat2 + " " + line
-        #print(out)
-        temp.write(out + '\n')
+        out = str(status[0])+ " " + str(status[1]) + " " + line
+        out = out.split()
+        print(out)
+        #temp.write(out + '\n')
 
     temp.close()
 
-    return(temp)
+    #return(temp)
 
 
 
 
 def insert(source,dest):
+    print("test")
 
-    elines = reversed(source.readlines())
+    elines = source.readlines()[::-1]
+    print(elines)
     stat = 0
     x = ' '
     for i in elines:
@@ -85,4 +88,4 @@ def insert(source,dest):
                 del tik[0,1]
                 stat = tik[0]
         print(tik)
-    dest.close()
+    des:t.close()
