@@ -1,4 +1,4 @@
-def extend(source, temp):
+def extend(source,dest):
     Extend = { "ADD"  : 0
              , "ADDC" : 0
              , "SUB"  : 0
@@ -35,6 +35,7 @@ def extend(source, temp):
 
     ilines = source.readlines()
     status = [0,0]
+    Temps = []
 
     for i in ilines:
         tok = i.strip('\n').split()
@@ -51,6 +52,7 @@ def extend(source, temp):
                     status[0] = 1
                 elif status[0] == 1:
                     status[1] = status[1] + 1
+#            print(status)
         elif tok == ['END']:
             break
         x = " "
@@ -60,32 +62,31 @@ def extend(source, temp):
         out = str(status[0])+ " " + str(status[1]) + " " + line
         out = out.split()
         print(out)
-        #temp.write(out + '\n')
+        Temps.append(out)
 
-    temp.close()
-
-    #return(temp)
-
-
-
-
-def insert(source,dest):
-    print("test")
-
-    elines = source.readlines()[::-1]
-    print(elines)
     stat = 0
-    x = ' '
-    for i in elines:
-        tik = i.strip("\n").split(" ")
+    it = 0
+
+    for i in Temps[::-1]:
+        tik = i
+        length = len(Temps)
         if tik[0] == stat:
-            del tik[0,1]
+            del tik[:2]
+            #it ++
         elif tik[0] != stat:
             if tik[1] < 3:
-                del tik[0,1]
-                #Insert Ext.tik[0]
-            if tik[1] > 2:
-                del tik[0,1]
+                ins = ['EXT', str(tik[0])]
+                print(ins)
+                ##Temps.insert(i, ins)
+                del tik[:2]
+            elif tik[1] > 2:
                 stat = tik[0]
-        print(tik)
-    des:t.close()
+                ins = ['EXTT', str(tik[0])]
+                #print(ins)
+                #Temps.insert(i, ins)
+                del tik[:2]
+#        print(tik)
+#        print(stat)
+    #print(Temps)
+    #print(len(Temps))
+    dest.close()
