@@ -33,13 +33,16 @@ def extend(source,dest):
              , "FUNC" : 1
              , "ADFN" : 1
              , "RMFN" : 1
-             , "MON"  : 1}
+             , "MON"  : 1
+             }
 
     ilines = source.readlines()
     stat = 0
     it = 0
     Temps = []
     x = " "
+    One = False
+    Two = False
     for i in ilines: #Turns the input file into a list of lists
         tok = i.strip('\n').split()
         if tok == ['END']: #Ends the file -> List of lists function
@@ -49,8 +52,6 @@ def extend(source,dest):
             pass
         else:
             Temps.append(tok)
-    One = False
-    Two = False
 #Scans the Temps list of lists 1 list at a time
     for i in Temps:
         Q = i[0]
@@ -59,27 +60,38 @@ def extend(source,dest):
             continue
         elif Q == 'END':
             break
-        elif Extend[Q] != stat:
-            if it + 1 <= len(Temps):
-                y = Temps[it + 1]
-                if y[0] in Extend:
-                    TOne = y
-                    if Extend[TOne[0]] == Extend[i[0]]:
-                        One = True
-            if it + 2 <= len(Temps):
-                z = Temps[it + 2]
-                if z[0] in Extend:
-                    TTwo = z
-                    if Extend[TTwo[0]] == Extend[i[0]]:
-                        Two = True
-            if One and Two:
-                Temps.insert(it, ["EXTT", str(Extend[i[0]])])
-                stat = Extend[i[0]]
-                it += 1
-            else:
-                Temps.insert(it, ["EXT", str(Extend[i[0]])])
-                it += 1
-        elif Extend[Q] == stat:
+        elif Q == "##": #used to denote a comment line
             continue
+        print(Extend[Q])
+        if Extend[Q] == stat:
+            continue
+#Checks if the current Inst's needed Extension status, matches the CPU's
+#Extension state
+        elif Extend[Q] != stat:
+#Checks if the next Inst and the current Inst have the same Ext
+            if it + 1 <= len(Temps):
+                TOne = Temps[it + 1]
+                if TOne[0] in Extend:
+                    if Extend[TOne[0]] == Extend[Q]:
+                        One = True
+#Checks if the next next Inst and the current Inst have the same Extension
+            if it + 2 <= len(Temps):
+                TTwo = Temps[it + 2]
+                if TTwo[0] in Extend:
+                    if Extend[TTwo[0]] == Extend[Q]: Two = True
+#If the current and next 2 following Inst need the same Ext; toggle to that Ext
+            if One and Two:
+                Temps.insert(it, ["EXTT", str(Extend[Q])])
+                stat = Extend[Q]
+                it += 1
+#Else-If the current Inst needs a different Ext state than the CPU is currently
+#in, and neither or only 1 of the next 2 inst need the new Ext, temp Ext into
+#the needed Inst
+            else:
+                Temps.insert(it, ["EXT", str(Extend[Q])])
+                it += 1
+#Else-if the current Inst and the CPU's current Ext match, do nothing
+        print(Extend[Q])
+        print('NEXT')
         it += 1
     print(Temps)
