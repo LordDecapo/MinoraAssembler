@@ -1,5 +1,5 @@
 import argparse
-import extendertest
+import extend
 import assemble
 import insert
 
@@ -35,10 +35,10 @@ except Exception as err:
     print("Unexpected error\n%s" % err)
     exit(1)
 
-extendertest.extend(source, temp)
+Temp = extend.extend(source, temp)
 #temp = open('temp.t', 'w+')
 
-#assemble.assemble(temp2,dest)
+assemble.assemble(Temp, dest)
 
 #ilines = dest.readlines()
 #for i in ilines:
